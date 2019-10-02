@@ -22,6 +22,10 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class GmailService implements EmailService {
 
+    private static final String SUCCESS_MESSAGE = "Письмо было успешно отправленно на %s.";
+    private static final String ERROR_MESSAGE = "Ошибка отправления письма на %s.";
+    private static final CharSequence COMMA = ", ";
+
     private final JavaMailSender javaMailSender;
 
     @Override
@@ -72,14 +76,14 @@ public class GmailService implements EmailService {
         return SendEmailResponse.builder()
                 .success(true)
                 .dateTime(LocalDateTime.now())
-                .message(String.format("Письмо было успешно отправленно на %s.", String.join(", ", request.getSendTo())))
+                .message(String.format(SUCCESS_MESSAGE, String.join(COMMA, request.getSendTo())))
                 .build();
     }
 
     private SendEmailResponse getErrorEmailResponse(SendEmailRequest request, Exception e) {
         return SendEmailResponse.builder()
                 .dateTime(LocalDateTime.now())
-                .message(String.format("Ошибка отправления письма на %s", request.getSendTo()))
+                .message(String.format(ERROR_MESSAGE, String.join(COMMA, request.getSendTo())))
                 .errorMessage(e.getLocalizedMessage())
                 .build();
     }
