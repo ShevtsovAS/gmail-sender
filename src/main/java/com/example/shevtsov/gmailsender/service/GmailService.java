@@ -24,7 +24,7 @@ public class GmailService implements EmailService {
 
     private static final String SUCCESS_MESSAGE = "Письмо было успешно отправленно на %s.";
     private static final String ERROR_MESSAGE = "Ошибка отправления письма на %s.";
-    private static final CharSequence COMMA = ", ";
+    private static final String COMMA = ", ";
 
     private final JavaMailSender javaMailSender;
 
