@@ -1,0 +1,15 @@
+version: '3'
+services:
+  gmail-sender:
+    image: ${DOCKER_USER}/${IMAGE_NAME}:${TAG}
+    container_name: ${IMAGE_NAME}
+    restart: always
+    environment:
+      - GMAIL_USER=${GMAIL_USER}
+      - GMAIL_PASSWORD=${GMAIL_PASSWORD}
+    ports:
+        - "8080:8080"
+    build:
+      context: .
+      args:
+        JAR_FILE: target/${IMAGE_NAME}-${TAG}.jar

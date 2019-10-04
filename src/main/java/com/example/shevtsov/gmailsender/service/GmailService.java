@@ -6,14 +6,12 @@ import com.example.shevtsov.gmailsender.model.SendEmailResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.time.LocalDateTime;
 
@@ -39,7 +37,7 @@ public class GmailService implements EmailService {
         try {
             javaMailSender.send(msg);
             return getSuccessfulEmailResponse(request);
-        } catch (MailException e) {
+        } catch (Exception e) {
             log.error(e.getLocalizedMessage(), e);
             return getErrorEmailResponse(request, e);
         }
@@ -66,7 +64,7 @@ public class GmailService implements EmailService {
 
             return getSuccessfulEmailResponse(request);
 
-        } catch (MessagingException e) {
+        } catch (Exception e) {
             log.error(e.getLocalizedMessage(), e);
             return getErrorEmailResponse(request, e);
         }

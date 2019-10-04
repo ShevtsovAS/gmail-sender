@@ -16,7 +16,8 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <docker.image.prefix>hack85sh</docker.image.prefix>
+        <!--suppress UnresolvedMavenProperty -->
+        <docker.image.prefix>${env.DOCKER_USER}</docker.image.prefix>
     </properties>
 
     <dependencies>
