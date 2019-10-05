@@ -18,6 +18,10 @@
         <java.version>1.8</java.version>
         <!--suppress UnresolvedMavenProperty -->
         <docker.image.prefix>${env.DOCKER_USER}</docker.image.prefix>
+        <!--suppress UnresolvedMavenProperty -->
+        <gmail.user>${env.GMAIL_USER}</gmail.user>
+        <!--suppress UnresolvedMavenProperty -->
+        <gmail.password>${env.GMAIL_PASSWORD}</gmail.password>
     </properties>
 
     <dependencies>
@@ -62,10 +66,8 @@
                     <tag>${project.version}</tag>
                     <buildArgs>
                         <JAR_FILE>target/${project.build.finalName}.${project.packaging}</JAR_FILE>
-                        <!--suppress UnresolvedMavenProperty -->
-                        <GMAIL_USER>${env.GMAIL_USER}</GMAIL_USER>
-                        <!--suppress UnresolvedMavenProperty -->
-                        <GMAIL_PASSWORD>${env.GMAIL_PASSWORD}</GMAIL_PASSWORD>
+                        <GMAIL_USER>${gmail.user}</GMAIL_USER>
+                        <GMAIL_PASSWORD>${gmail.password}</GMAIL_PASSWORD>
                     </buildArgs>
                     <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
                 </configuration>
