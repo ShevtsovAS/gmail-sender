@@ -65,7 +65,7 @@
                     <verbose>true</verbose>
                     <images>
                         <image>
-                            <alias>my-service</alias>
+                            <alias>gmail-service</alias>
                             <name>${docker.image.prefix}/${project.artifactId}</name>
 
                             <build>
