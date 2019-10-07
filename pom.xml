@@ -13,6 +13,7 @@
     <version>0.0.3-SNAPSHOT</version>
     <name>gmail-sender</name>
     <description>Demo how to send email from gmail account</description>
+    <packaging>jar</packaging>
 
     <properties>
         <java.version>1.8</java.version>
@@ -57,19 +58,42 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
             <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>dockerfile-maven-plugin</artifactId>
-                <version>1.4.12</version>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.31.0</version>
                 <configuration>
                     <verbose>true</verbose>
-                    <repository>${docker.image.prefix}/${project.artifactId}</repository>
-                    <tag>${project.version}</tag>
-                    <buildArgs>
-                        <JAR_FILE>target/${project.build.finalName}.${project.packaging}</JAR_FILE>
-                        <GMAIL_USER>${gmail.user}</GMAIL_USER>
-                        <GMAIL_PASSWORD>${gmail.password}</GMAIL_PASSWORD>
-                    </buildArgs>
-                    <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
+                    <images>
+                        <image>
+                            <alias>my-service</alias>
+                            <name>${docker.image.prefix}/${project.artifactId}</name>
+
+                            <build>
+                                <dockerFileDir>${project.basedir}</dockerFileDir>
+                                <args>
+                                    <JAR_FILE>target/${project.build.finalName}.${project.packaging}</JAR_FILE>
+                                </args>
+                                <tags>
+                                    <tag>${project.version}</tag>
+                                    <tag>latest</tag>
+                                </tags>
+                            </build>
+
+                            <run>
+                                <ports>
+                                    <port>8080:8080</port>
+                                </ports>
+                                <env>
+                                    <GMAIL_USER>${gmail.user}</GMAIL_USER>
+                                    <GMAIL_PASSWORD>${gmail.password}</GMAIL_PASSWORD>
+                                </env>
+                                <restartPolicy>
+                                    <name>always</name>
+                                </restartPolicy>
+                            </run>
+
+                        </image>
+                    </images>
                 </configuration>
                 <executions>
                     <execution>
@@ -80,25 +104,11 @@
                         </goals>
                     </execution>
                     <execution>
-                        <id>push-version</id>
+                        <id>push</id>
                         <phase>install</phase>
                         <goals>
                             <goal>push</goal>
                         </goals>
-                        <configuration>
-                            <tag>${project.version}</tag>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>push-latest</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>build</goal>
-                            <goal>push</goal>
-                        </goals>
-                        <configuration>
-                            <tag>latest</tag>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
